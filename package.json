@@ -1,0 +1,39 @@
+{
+  "name": "taskmanage",
+  "version": "1.0.0",
+  "description": "Task Management System with React frontend and Node.js backend",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "migrate": "node server/migrate.js",
+    "client": "npm start --prefix client",
+    "test": "jest",
+    "build": "npm run build --prefix client"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "task",
+    "management",
+    "project",
+    "react",
+    "node"
+  ],
+  "author": "",
+  "license": "MIT"
+}

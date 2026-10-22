@@ -1,0 +1,60 @@
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: #f6f7fa; color: #1a1a2e; margin: 0; }
+header.site-header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 2rem 1rem; text-align: center; }
+header.site-header h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; }
+header.site-header p { margin: .25rem 0 0; color: #a0a8c0; }
+.container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+nav { display: flex; gap: .75rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+nav a { color: #fff; text-decoration: none; font-weight: 500; padding: .35rem .75rem; border-radius: 6px; opacity: .85; transition: opacity .15s; }
+nav a:hover { opacity: 1; background: rgba(255,255,255,.08); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.card { background: #fff; border-radius: 14px; padding: 1.25rem; box-shadow: 0 4px 16px rgba(0,0,0,.06); border: 1px solid #ececf3; }
+.card h2 { font-size: 1.05rem; margin-bottom: .5rem; }
+.card p { font-size: .9rem; color: #555; }
+.tag { display: inline-block; font-size: .7rem; font-weight: 600; letter-spacing: .04em; padding: .2rem .55rem; border-radius: 999px; margin-top: .5rem; }
+.tag-js { background: #f7df1e; color: #222; }
+.tag-react { background: #61dafb; color: #111; }
+.tag-node { background: #339933; color: #fff; }
+.tag-pg { background: #336791; color: #fff; }
+.tag-docker { background: #2496ed; color: #fff; }
+.setup { background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #ececf3; box-shadow: 0 4px 16px rgba(0,0,0,.06); margin-top: 1.5rem; }
+.setup h2 { margin-bottom: .75rem; font-size: 1.2rem; }
+pre { background: #1a1a2e; color: #eaeaea; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: .85rem; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+.footer { text-align: center; padding: 2rem 1rem; color: #8890a8; font-size: .85rem; }
+form { display: flex; flex-direction: column; gap: .75rem; }
+input, select, textarea { padding: .6rem .75rem; border: 1px solid #ddd; border-radius: 8px; font: inherit; }
+button { padding: .6rem 1rem; border: none; border-radius: 8px; background: #16213e; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+button:hover { background: #1a2b4e; }
+button.secondary { background: #e4e6eb; color: #222; }
+button.secondary:hover { background: #d2d4da; }
+.toolbar { display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; gap: .75rem; }
+.toolbar > input, .toolbar > select { flex: 1 1 170px; min-width: 120px; }
+.toolbar > button { flex: 0 0 auto; }
+.project-form, .task-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: end; gap: .8rem; }
+.project-form h3, .task-form h3 { grid-column: 1 / -1; margin: 0; }
+.project-form label, .task-form label { display: flex; flex-direction: column; gap: .35rem; }
+.task-form > .toolbar { grid-column: 1 / -1; }
+.muted, .empty-state { color: #687086; }
+.empty-state { text-align: center; padding: 2rem 1rem; }
+.error-message { color: #9c1c1c; background: #fff0f0; border: 1px solid #f0c5c5; border-radius: 8px; padding: .75rem 1rem; }
+.success-message { color: #155d35; background: #ecfff3; border: 1px solid #bfe8ce; border-radius: 8px; padding: .75rem 1rem; overflow-wrap: anywhere; }
+.danger { background: #9c1c1c; }
+.danger:hover { background: #7e1717; }
+.member-list { list-style: none; padding: 0; }
+.member-list li { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .6rem 0; border-bottom: 1px solid #ececf3; overflow-wrap: anywhere; }
+.comment { border-left: 3px solid #16213e; padding: .25rem .75rem; margin: .75rem 0; }
+.comment p { margin: .3rem 0; }
+.comment small { color: #687086; }
+.table-scroll { width: 100%; overflow-x: auto; }
+th, td { text-align: left; padding: .65rem .5rem; border-bottom: 1px solid #ececf3; }
+.pagination { justify-content: center; margin: 1rem auto; }
+.link-button { padding: 0; background: transparent; color: #16213e; text-decoration: underline; }
+.link-button:hover { background: transparent; }
+label { display: flex; flex-direction: column; gap: .3rem; }
+@media (max-width: 600px) {
+  .container { margin: 1rem auto; }
+  .setup, .card { padding: 1rem; }
+  .member-list li { align-items: flex-start; flex-direction: column; }
+  header.site-header { padding: 1.3rem .8rem; }
+}

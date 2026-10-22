@@ -1,0 +1,68 @@
+{
+  "info": {
+    "name": "TaskManage API",
+    "description": "Auth, project, team, task, comment, attachment, dashboard, and administration requests. Set baseUrl and account credentials in the collection environment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "projectId", "value": "" },
+    { "key": "taskId", "value": "" },
+    { "key": "attachmentId", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "inviteToken", "value": "" },
+    { "key": "resetToken", "value": "" }
+  ],
+  "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        { "name": "Register member", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Example Member\",\n  \"email\": \"member@example.com\",\n  \"password\": \"ChangeMe123\"\n}" }, "url": "{{baseUrl}}/auth/register" }, "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 201) pm.collectionVariables.set('token', pm.response.json().token);"] } }] },
+        { "name": "Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"member@example.com\",\n  \"password\": \"ChangeMe123\"\n}" }, "url": "{{baseUrl}}/auth/login" }, "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 200) pm.collectionVariables.set('token', pm.response.json().token);"] } }] },
+        { "name": "Current account", "request": { "method": "GET", "url": "{{baseUrl}}/auth/me" } },
+        { "name": "Request password reset", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"member@example.com\"\n}" }, "url": "{{baseUrl}}/auth/forgot-password" }, "auth": { "type": "noauth" }, "event": [{ "listen": "test", "script": { "exec": ["const body = pm.response.json(); if (body.development_token) pm.collectionVariables.set('resetToken', body.development_token);"] } }] },
+        { "name": "Reset password", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"password\": \"NewPassword123\"\n}" }, "url": "{{baseUrl}}/auth/reset-password" }, "auth": { "type": "noauth" } }
+      ]
+    },
+    {
+      "name": "Projects and team",
+      "item": [
+        { "name": "List projects", "request": { "method": "GET", "url": "{{baseUrl}}/projects?page=1&limit=25&search=" } },
+        { "name": "Create project", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Example project\",\n  \"description\": \"Project description\",\n  \"deadline\": \"2027-01-01\"\n}" }, "url": "{{baseUrl}}/projects" }, "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 201) pm.collectionVariables.set('projectId', pm.response.json().project.id);"] } }] },
+        { "name": "Get project", "request": { "method": "GET", "url": "{{baseUrl}}/projects/{{projectId}}" } },
+        { "name": "Update project", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated description\",\n  \"status\": \"active\"\n}" }, "url": "{{baseUrl}}/projects/{{projectId}}" } },
+        { "name": "List project members", "request": { "method": "GET", "url": "{{baseUrl}}/projects/{{projectId}}/members" } },
+        { "name": "Add existing member", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"member@example.com\",\n  \"project_role\": \"member\"\n}" }, "url": "{{baseUrl}}/projects/{{projectId}}/members" } },
+        { "name": "Create invitation", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"invitee@example.com\"\n}" }, "url": "{{baseUrl}}/projects/{{projectId}}/invitations" }, "event": [{ "listen": "test", "script": { "exec": ["const body = pm.response.json(); if (body.invitation_url) pm.collectionVariables.set('inviteToken', new URL(body.invitation_url).searchParams.get('token'));"] } }] },
+        { "name": "Accept invitation", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"token\": \"{{inviteToken}}\"\n}" }, "url": "{{baseUrl}}/projects/invitations/accept" } }
+      ]
+    },
+    {
+      "name": "Tasks and collaboration",
+      "item": [
+        { "name": "List project tasks", "request": { "method": "GET", "url": "{{baseUrl}}/projects/{{projectId}}/tasks?search=&status=&priority=&page=1&limit=25" } },
+        { "name": "Create task", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Example task\",\n  \"description\": \"Task description\",\n  \"project_id\": \"{{projectId}}\",\n  \"priority\": \"medium\",\n  \"status\": \"todo\",\n  \"due_date\": \"2027-01-01\"\n}" }, "url": "{{baseUrl}}/tasks" }, "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 201) pm.collectionVariables.set('taskId', pm.response.json().task.id);"] } }] },
+        { "name": "Update task", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"status\": \"in_progress\",\n  \"priority\": \"high\"\n}" }, "url": "{{baseUrl}}/tasks/{{taskId}}" } },
+        { "name": "Task status history", "request": { "method": "GET", "url": "{{baseUrl}}/tasks/{{taskId}}/history" } },
+        { "name": "Add comment", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"content\": \"Example comment\"\n}" }, "url": "{{baseUrl}}/tasks/{{taskId}}/comments" } },
+        { "name": "List comments", "request": { "method": "GET", "url": "{{baseUrl}}/tasks/{{taskId}}/comments" } },
+        { "name": "List attachments", "request": { "method": "GET", "url": "{{baseUrl}}/tasks/{{taskId}}/attachments" } },
+        { "name": "Upload small text attachment", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"file_name\": \"hello.txt\",\n  \"mime_type\": \"text/plain\",\n  \"data\": \"SGVsbG8gd29ybGQ=\"\n}" }, "url": "{{baseUrl}}/tasks/{{taskId}}/attachments" }, "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 201) pm.collectionVariables.set('attachmentId', pm.response.json().attachment.id);"] } }] },
+        { "name": "Download attachment", "request": { "method": "GET", "url": "{{baseUrl}}/attachments/{{attachmentId}}/download" } }
+      ]
+    },
+    {
+      "name": "Dashboard and administration",
+      "item": [
+        { "name": "Project progress", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/progress" } },
+        { "name": "Upcoming deadlines", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/upcoming" } },
+        { "name": "Task statistics", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/statistics" } },
+        { "name": "List users (admin)", "request": { "method": "GET", "url": "{{baseUrl}}/users?page=1&limit=25" } },
+        { "name": "Audit logs (admin)", "request": { "method": "GET", "url": "{{baseUrl}}/audit-logs?page=1&limit=25" } },
+        { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/health" }, "auth": { "type": "noauth" } }
+      ]
+    }
+  ]
+}
